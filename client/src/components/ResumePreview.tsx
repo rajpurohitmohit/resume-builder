@@ -33,7 +33,7 @@ const ResumePreview = ({data, template, accentColor, classes = ""}: ResumePrevie
           {renderTemplate()}
         </div>
       </div>
-      <style tsx>
+      <style>
         {`
         @page{
             size: letter;

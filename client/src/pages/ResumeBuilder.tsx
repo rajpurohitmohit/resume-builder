@@ -1,4 +1,3 @@
-import { dummyResumeData } from "@/assets/assets";
 import ColorPicker from "@/components/ColorPicker";
 import EducationForm from "@/components/EducationForm";
 import ExperienceForm from "@/components/ExperienceForm";
@@ -116,6 +115,7 @@ const ResumeBuilder = () => {
   }, []);
 
   const changeResumeVisibility = async () => {
+    if (!resumeId) return;
     try {
       const formData = new FormData();
       formData.append("resumeId", resumeId);
