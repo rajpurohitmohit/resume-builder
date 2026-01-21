@@ -1,5 +1,6 @@
 import { BookUserIcon } from "lucide-react";
 import Title from "./Title";
+import { getThemeColors } from "@/configs/theme";
 
 interface cardInterface {
     card: {
@@ -10,6 +11,7 @@ interface cardInterface {
 }
 
 const Testimonial = () => {
+  const themeColors = getThemeColors();
   const cardsData = [
     {
       image:
@@ -49,7 +51,7 @@ const Testimonial = () => {
           <div className="flex items-center gap-1">
             <p>{card.name}</p>
             <svg
-              className="mt-0.5 fill-green-500"
+              className={`mt-0.5 ${themeColors.fill}`}
               width="12"
               height="12"
               viewBox="0 0 12 12"
@@ -77,8 +79,8 @@ const Testimonial = () => {
         id="testimonials"
         className="flex flex-col items-center my-10 scroll-mt-12"
       >
-        <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-6 py-1.5">
-          <BookUserIcon className="size-4.5 stroke-green-600" />
+        <div className={`flex items-center gap-2 text-sm ${themeColors.text} ${themeColors.bgLight} rounded-full px-6 py-1.5`}>
+          <BookUserIcon className={`size-4.5 ${themeColors.stroke}`} />
 
           <span>Testimonials</span>
         </div>

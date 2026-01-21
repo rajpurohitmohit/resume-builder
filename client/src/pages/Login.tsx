@@ -1,5 +1,6 @@
 import { login } from "@/app/features/authSlice";
 import api from "@/configs/api";
+import { getThemeColors } from "@/configs/theme";
 import { LockIcon, Mail, User2Icon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
@@ -7,6 +8,7 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
+  const themeColors = getThemeColors();
   const query = new URLSearchParams(window.location.search)
   const urlState = query.get('state')
   const [state, setState] = useState(urlState|| "login");
@@ -91,14 +93,14 @@ export default function Login() {
             required
           />
         </div>
-        <div className="mt-4 text-left text-green-500">
+        <div className={`mt-4 text-left ${themeColors.text}`}>
           <button className="text-sm" type="reset">
             Forget password?
           </button>
         </div>
         <button
           type="submit"
-          className="mt-2 w-full h-11 rounded-lg text-white bg-green-500 hover:opacity-90 transition-opacity"
+          className={`mt-2 w-full h-11 rounded-lg text-white ${themeColors.bg} hover:opacity-90 transition-opacity`}
         >
           {state === "login" ? "Login" : "Sign up"}
         </button>
@@ -111,7 +113,7 @@ export default function Login() {
           {state === "login"
             ? "Don't have an account?"
             : "Already have an account?"}{" "}
-          <a href="#" className="text-green-500 hover:underline">
+          <a href="#" className={`${themeColors.text} hover:underline`}>
             click here
           </a>
         </p>

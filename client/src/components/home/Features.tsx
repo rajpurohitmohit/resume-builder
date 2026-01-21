@@ -1,16 +1,18 @@
 import { Zap } from "lucide-react";
 import { useState } from "react";
 import Title from "./Title";
+import { getThemeColors } from "@/configs/theme";
 
 const Features = () => {
   const [isHover, setIsHover] = useState(false);
+  const themeColors = getThemeColors();
 
   return (
     <div
       id="features"
       className="flex flex-col items-center my-10 scroll-mt-12"
     >
-      <div className="flex items-center gap-2 text-sm text-green-600 bg-green-400/10 rounded-full px-6 py-1.5">
+      <div className={`flex items-center gap-2 text-sm ${themeColors.text} ${themeColors.bgLight} rounded-full px-6 py-1.5`}>
         <Zap width={14} />
 
         <span>Simple Process</span>
@@ -69,7 +71,7 @@ const Features = () => {
             </div>
           </div>
           <div className="flex items-center justify-center gap-6 max-w-md group cursor-pointer">
-            <div className="p-6 group-hover:bg-green-100 border border-transparent group-hover:border-green-300 flex gap-4 rounded-xl transition-colors">
+            <div className={`p-6 group-hover:${themeColors.bgLight} border border-transparent group-hover:${themeColors.border} flex gap-4 rounded-xl transition-colors`}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -80,7 +82,7 @@ const Features = () => {
                 strokeWidth="2"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                className="size-6 stroke-green-600"
+                className={`size-6 ${themeColors.stroke}`}
               >
                 <path d="M12 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7" />
                 <path d="M18.375 2.625a1 1 0 0 1 3 3l-9.013 9.014a2 2 0 0 1-.853.505l-2.873.84a.5.5 0 0 1-.62-.62l.84-2.873a2 2 0 0 1 .506-.852z" />

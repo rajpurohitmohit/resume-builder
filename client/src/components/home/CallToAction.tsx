@@ -1,4 +1,8 @@
+import { getThemeColors } from "@/configs/theme";
+
 const CallToAction = () => {
+  const themeColors = getThemeColors();
+
   return (
     <div
       id="cta"
@@ -10,7 +14,7 @@ const CallToAction = () => {
         </p>
         <a
           href="/app"
-          className="flex items-center gap-2 rounded py-3 px-8 bg-green-600 hover:bg-green-700 transition text-white"
+          className={`flex items-center gap-2 rounded py-3 px-8 ${themeColors.bg} ${themeColors.bgHover} transition text-white`}
         >
           <span>Get Started</span>
           <svg
