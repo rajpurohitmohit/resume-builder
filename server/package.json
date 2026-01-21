@@ -1,10 +1,12 @@
 {
   "name": "server",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "dist/index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon"
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "keywords": [],
   "author": "",
