@@ -9,20 +9,6 @@ export const theme = {
 
 // Color mappings for Tailwind classes
 export const colors = {
-  green: {
-    text: "text-green-600",
-    textHover: "hover:text-green-600",
-    bg: "bg-green-600",
-    bgHover: "hover:bg-green-700",
-    bgLight: "bg-green-400/10",
-    bgGradient: "from-green-500 to-green-600",
-    footerGradient: "from-white via-green-200/60 to-white",
-    border: "border-green-300",
-    stroke: "stroke-green-600",
-    fill: "fill-green-500",
-    ring: "ring-green-500",
-    svgStroke: "#00C34D",
-  },
   blue: {
     text: "text-blue-600",
     textHover: "hover:text-blue-600",
