@@ -1,11 +1,5 @@
 import api from "@/configs/api";
-import {
-  Briefcase,
-  Loader2,
-  Plus,
-  Sparkles,
-  Trash2,
-} from "lucide-react";
+import { Briefcase, Loader2, Plus, Sparkles, Trash2 } from "lucide-react";
 import { useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -163,7 +157,7 @@ const ExperienceForm = ({ data, onChange }: ExperienceFormProps) => {
                     Job Description
                   </label>
                   <button
-                    className="flex items-center gap-1 px-2 py-1 text-xs bg-purple-100 text-purple-700 rounded hover:bg-purple-200 transition-colors disabled:opacity-50"
+                    className="flex items-center gap-1 px-2 py-1 text-xs bg-green-100 text-green-700 rounded hover:bg-green-200 transition-colors disabled:opacity-50"
                     disabled={
                       generatingIndex === index ||
                       !experience.position ||

@@ -3,8 +3,8 @@
 
 export const theme = {
   // Main brand color - change this to update the entire theme
-  // Options: "green", "blue", "purple", "orange", "red", "pink", "indigo", "teal", "cyan"
-  primary: "indigo",
+  // Options: "green", "blue", "green", "orange", "red", "pink", "indigo", "teal", "cyan"
+  primary: "orange",
 } as const;
 
 // Color mappings for Tailwind classes
@@ -37,18 +37,18 @@ export const colors = {
     ring: "ring-blue-500",
     svgStroke: "#2563EB",
   },
-  purple: {
-    text: "text-purple-600",
-    textHover: "hover:text-purple-600",
-    bg: "bg-purple-600",
-    bgHover: "hover:bg-purple-700",
-    bgLight: "bg-purple-400/10",
-    bgGradient: "from-purple-500 to-purple-600",
-    footerGradient: "from-white via-purple-200/60 to-white",
-    border: "border-purple-300",
-    stroke: "stroke-purple-600",
-    fill: "fill-purple-500",
-    ring: "ring-purple-500",
+  green: {
+    text: "text-green-600",
+    textHover: "hover:text-green-600",
+    bg: "bg-green-600",
+    bgHover: "hover:bg-green-700",
+    bgLight: "bg-green-400/10",
+    bgGradient: "from-green-500 to-green-600",
+    footerGradient: "from-white via-green-200/60 to-white",
+    border: "border-green-300",
+    stroke: "stroke-green-600",
+    fill: "fill-green-500",
+    ring: "ring-green-500",
     svgStroke: "#9333EA",
   },
   orange: {

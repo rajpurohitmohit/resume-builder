@@ -20,7 +20,7 @@ const Hero = () => {
           height="42"
           viewBox="0 0 128 42"
           fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+          xmlns="www.github.com/rajpurohitmohit"
         >
           <path
             d="M0 0H27.7325V14H13.8663L0 0ZM0 14H13.8663L27.7325 28H0V14ZM0 28H13.8663V42L0 28Z"

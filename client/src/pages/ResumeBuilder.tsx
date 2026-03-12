@@ -164,8 +164,10 @@ const ResumeBuilder = () => {
     typeof resumeData.personal_info.image === "object" &&
       formData.append("image", resumeData.personal_info.image);
 
-    const {data} = await api.put("/api/resumes/update", formData, {headers: {Authorization: token}})
-    setResumeData(data.resume)
+    const { data } = await api.put("/api/resumes/update", formData, {
+      headers: { Authorization: token },
+    });
+    setResumeData(data.resume);
     return data;
   };
 
@@ -307,14 +309,16 @@ const ResumeBuilder = () => {
                   />
                 )}
               </div>
-              <button className="bg-linear-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring hover:ring-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm" onClick={() => {
-                toast.promise(saveResume(), {
-                  loading: 'Saving...',
-                  success: 'Saved Successfully!',
-                  error: (err) => err?.message || 'Failed to save'
-                })
-              }
-              }>
+              <button
+                className="bg-linear-to-br from-green-100 to-green-200 ring-green-300 text-green-600 ring hover:ring-green-400 transition-all rounded-md px-6 py-2 mt-6 text-sm"
+                onClick={() => {
+                  toast.promise(saveResume(), {
+                    loading: "Saving...",
+                    success: "Saved Successfully!",
+                    error: (err) => err?.message || "Failed to save",
+                  });
+                }}
+              >
                 Save Changes
               </button>
             </div>
@@ -330,7 +334,7 @@ const ResumeBuilder = () => {
                   </button>
                 )}
                 <button
-                  className="flex items-center p-2 px-4 gap-2 text-xs bg-linear-to-br from-purple-100 to-purple-200 text-purple-600 ring-purple-300 rounded-lg hover:ring transition-ring"
+                  className="flex items-center p-2 px-4 gap-2 text-xs bg-linear-to-br from-green-100 to-green-200 text-green-600 ring-green-300 rounded-lg hover:ring transition-ring"
                   onClick={changeResumeVisibility}
                 >
                   {resumeData.public ? (
