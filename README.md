@@ -1,241 +1,281 @@
-# 📄 Resume Builder
+<div align="center">
 
-A modern, full-stack resume builder application that allows users to create, customize, and share professional resumes with AI-powered content suggestions.
+<img src="https://img.shields.io/badge/resume-builder-4F46E5?style=for-the-badge&labelColor=0F0F0F" alt="Resume Builder" height="40"/>
 
-![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat&logo=react&logoColor=white)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat&logo=typescript&logoColor=white)
-![Node.js](https://img.shields.io/badge/Node.js-Express%205-339933?style=flat&logo=node.js&logoColor=white)
-![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose%209-47A248?style=flat&logo=mongodb&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-4.1-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+# Resume Builder
+
+**Create. Customize. Share. Land the job.**
+
+A full-stack, AI-powered resume builder with real-time preview, multiple templates, PDF import, and shareable links — built for the modern job seeker.
+
+<br/>
+
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-webresumebuilder.vercel.app-4F46E5?style=for-the-badge&logo=vercel&logoColor=white)](https://webresumebuilder.vercel.app)
+
+<br/>
+
+![React](https://img.shields.io/badge/React_19-20232A?style=flat-square&logo=react&logoColor=61DAFB)
+![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)
+![Vite](https://img.shields.io/badge/Vite-646CFF?style=flat-square&logo=vite&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS_v4-06B6D4?style=flat-square&logo=tailwind-css&logoColor=white)
+![Express](https://img.shields.io/badge/Express_5-000000?style=flat-square&logo=express&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?style=flat-square&logo=firebase&logoColor=black)
+
+</div>
+
+---
 
 ## ✨ Features
 
-- **Multiple Resume Templates** - Choose from Classic, Modern, Minimal, and Minimal Image templates
-- **AI-Powered Suggestions** - Get intelligent content suggestions powered by OpenAI
-- **Real-time Preview** - See changes instantly as you edit your resume
-- **Custom Accent Colors** - Personalize your resume with custom color schemes
-- **PDF Resume Import** - Extract content from existing PDF resumes
-- **Image Upload** - Add profile photos with ImageKit integration
-- **User Authentication** - Secure JWT-based authentication
-- **Google Authentication** - Sign in or create an account with Google
-- **Cloud Storage** - Save and access your resumes from anywhere
-- **Shareable Links** - Make your resume public and share with recruiters
+| | Feature | Description |
+|---|---|---|
+| 🤖 | **AI Content Enhancement** | Enhance your professional summary and job descriptions with Gemini AI |
+| 📄 | **PDF Resume Import** | Upload an existing PDF — AI extracts and populates your resume instantly |
+| 🎨 | **4 Premium Templates** | Classic, Modern, Minimal, and Minimal Image templates to suit every style |
+| 🎨 | **Custom Accent Colors** | Personalize any template with a full color picker |
+| ⚡ | **Real-time Preview** | See every change rendered live as you type |
+| 🔗 | **Shareable Public Links** | Toggle your resume public and share a permanent link with recruiters |
+| 📥 | **PDF Download** | Download your polished resume as a PDF in one click |
+| 🔐 | **Google & Email Auth** | Sign in with Google or create an account with email and password |
+| ☁️ | **Cloud Storage** | Your resumes are saved and accessible from any device |
+
+---
 
 ## 🛠️ Tech Stack
 
-### Frontend
+<table>
+<tr>
+<td valign="top" width="50%">
 
-- **React 19** - UI library
-- **TypeScript** - Type safety
-- **Vite** - Build tool
-- **Tailwind CSS 4** - Styling
-- **Redux Toolkit** - State management
-- **React Router 7** - Navigation
-- **Axios** - HTTP client
-- **Lucide React** - Icons
+### Frontend
+- **React 19** — UI library
+- **TypeScript** — Type safety across the codebase
+- **Vite 7** — Lightning-fast build tool
+- **Tailwind CSS v4** — Utility-first styling
+- **Redux Toolkit** — Predictable state management
+- **React Router v7** — Client-side routing
+- **Firebase SDK** — Google OAuth on the client
+- **Axios** — HTTP client
+- **react-pdftotext** — In-browser PDF parsing
+- **Lucide React** — Icon library
+
+</td>
+<td valign="top" width="50%">
 
 ### Backend
+- **Node.js + Express 5** — API server
+- **TypeScript** — Type-safe server code
+- **MongoDB + Mongoose** — Database & ODM
+- **JWT** — Stateless authentication
+- **Firebase Admin SDK** — Google ID token verification
+- **Gemini API (OpenAI-compatible)** — AI enhancements & resume extraction
+- **ImageKit** — Profile photo storage & CDN
+- **Multer** — Multipart file uploads
+- **bcrypt** — Password hashing
 
-- **Node.js** - Runtime
-- **Express 5** - Web framework
-- **MongoDB** - Database
-- **Mongoose** - ODM
-- **JWT** - Authentication
-- **Firebase Authentication** - Google identity verification
-- **OpenAI API** - AI features
-- **ImageKit** - Image storage
-- **Multer** - File uploads
+</td>
+</tr>
+</table>
+
+---
 
 ## 📁 Project Structure
 
 ```
 resume-builder/
-├── client/                 # Frontend React application
+├── client/                         # Vite + React frontend
 │   ├── src/
-│   │   ├── app/           # Redux store & slices
-│   │   ├── assets/        # Static assets
-│   │   ├── components/    # Reusable components
-│   │   │   ├── home/      # Landing page components
-│   │   │   └── templates/ # Resume templates
-│   │   ├── configs/       # API configuration
-│   │   ├── lib/           # Utility functions
-│   │   └── pages/         # Page components
-│   └── public/            # Public assets
+│   │   ├── app/
+│   │   │   └── features/
+│   │   │       └── authSlice.ts    # Auth state (Redux)
+│   │   ├── components/
+│   │   │   ├── home/               # Landing page sections
+│   │   │   └── templates/          # Resume template components
+│   │   ├── configs/                # API client, Firebase, theme
+│   │   ├── pages/                  # Route-level pages
+│   │   │   ├── Home.tsx
+│   │   │   ├── Dashboard.tsx
+│   │   │   ├── ResumeBuilder.tsx
+│   │   │   ├── Preview.tsx
+│   │   │   └── Login.tsx
+│   │   └── lib/                    # Utility functions
+│   └── public/
 │
-└── server/                 # Backend Node.js application
+└── server/                         # Express backend
     └── src/
-        ├── configs/       # Database, AI, ImageKit configs
-        ├── controller/    # Route controllers
-        ├── middlewares/   # Auth middleware
-        ├── model/         # Mongoose models
-        ├── routes/        # API routes
-        └── types/         # TypeScript types
+        ├── configs/                # DB, AI, Firebase Admin, ImageKit, Multer
+        ├── controller/             # aiController, resumeController, userController
+        ├── middlewares/            # JWT auth middleware
+        ├── model/                  # User & Resume Mongoose models
+        ├── routes/                 # API route definitions
+        └── types/                  # Express type augmentations
 ```
+
+---
 
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js (v18 or higher)
-- MongoDB database
-- OpenAI API key
-- ImageKit account (for image uploads)
+- **Node.js** v18+
+- **MongoDB** database (local or [Atlas](https://www.mongodb.com/atlas))
+- **Firebase** project (for Google Auth)
+- **Gemini API** key ([Google AI Studio](https://aistudio.google.com/))
+- **ImageKit** account (for profile photo uploads)
+
+---
 
 ### Environment Variables
 
-#### Client (`client/.env`)
+#### `client/.env`
 
 ```env
-VITE_API_URL=http://localhost:3000
-VITE_FIREBASE_API_KEY=your_firebase_web_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_firebase_app_id
+VITE_BASE_URL=http://localhost:3000
+
+# Firebase Web App Config
+VITE_FIREBASE_API_KEY=your_firebase_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_project.firebasestorage.app
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_FIREBASE_APP_ID=your_app_id
 ```
 
-#### Server (`server/.env`)
+#### `server/.env`
 
 ```env
-PORT=3000
-MONGODB_URI=your_mongodb_connection_string
+MONGODB_URL=your_mongodb_connection_string
 JWT_SECRET=your_jwt_secret
 
-# OpenAI
-OPENAI_API_KEY=your_openai_api_key
+# Gemini AI
+GEMINI_API_KEY=your_gemini_api_key
+GEMINI_BASE_URL=https://generativelanguage.googleapis.com/v1beta/openai/
+GEMINI_MODEL=gemini-2.5-flash
 
 # ImageKit
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
-IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
+IMAGEKIT_URL_ENDPOINT=https://ik.imagekit.io/your_id
 
-# Deployed frontend URL(s), comma-separated if needed
+# CORS — deployed frontend URL(s), comma-separated
 CLIENT_URL=http://localhost:5173
 
-# Firebase Admin (Google sign-in token verification)
-FIREBASE_PROJECT_ID=your_firebase_project_id
-FIREBASE_CLIENT_EMAIL=your_firebase_admin_client_email
-FIREBASE_PRIVATE_KEY="your_firebase_admin_private_key_with_escaped_newlines"
+# Firebase Admin SDK (for Google sign-in token verification)
+FIREBASE_PROJECT_ID=your_project_id
+FIREBASE_CLIENT_EMAIL=firebase-adminsdk-xxxxx@your_project.iam.gserviceaccount.com
+FIREBASE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
 ```
-
-### Installation
-
-1. **Clone the repository**
-
-   ```bash
-   git clone https://github.com/yourusername/resume-builder.git
-   cd resume-builder
-   ```
-
-2. **Install server dependencies**
-
-   ```bash
-   cd server
-   npm install
-   ```
-
-3. **Install client dependencies**
-
-   ```bash
-   cd ../client
-   npm install
-   ```
-
-4. **Set up environment variables**
-   - Create `.env` files in both `client` and `server` directories
-   - Add the required environment variables as shown above
-
-5. **Start the development servers**
-
-   In the server directory:
-
-   ```bash
-   npm run dev
-   ```
-
-   In the client directory:
-
-   ```bash
-   npm run dev
-   ```
-
-6. **Open your browser**
-   - Frontend: `http://localhost:5173`
-   - Backend: `http://localhost:3000`
-
-## 📝 API Endpoints
-
-### Authentication
-
-| Method | Endpoint              | Description       |
-| ------ | --------------------- | ----------------- |
-| POST   | `/api/users/register` | Register new user |
-| POST   | `/api/users/login`    | User login        |
-| POST   | `/api/users/google`   | Google sign-in or sign-up |
-| GET    | `/api/users/data`     | Get user data     |
-
-### Resumes
-
-| Method | Endpoint           | Description          |
-| ------ | ------------------ | -------------------- |
-| GET    | `/api/resumes`     | Get all user resumes |
-| GET    | `/api/resumes/:id` | Get resume by ID     |
-| POST   | `/api/resumes`     | Create new resume    |
-| PUT    | `/api/resumes/:id` | Update resume        |
-| DELETE | `/api/resumes/:id` | Delete resume        |
-
-### AI Features
-
-| Method | Endpoint          | Description                |
-| ------ | ----------------- | -------------------------- |
-| POST   | `/api/ai/suggest` | Get AI content suggestions |
-
-## 🎨 Available Templates
-
-1. **Classic** - Traditional professional layout
-2. **Modern** - Contemporary design with accent colors
-3. **Minimal** - Clean and simple design
-4. **Minimal Image** - Minimal design with profile photo
-
-## 🔧 Scripts
-
-### Client
-
-```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
-npm run lint     # Run ESLint
-```
-
-### Server
-
-```bash
-npm run dev      # Start development server with nodemon
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is licensed under the ISC License.
-
-## 🙏 Acknowledgments
-
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Lucide Icons](https://lucide.dev/)
-- [OpenAI](https://openai.com/)
-- [ImageKit](https://imagekit.io/)
 
 ---
 
-<p align="center">Made with by Mohit Rajpurohit</p>
+### Installation
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/rajpurohitmohit/resume-builder.git
+cd resume-builder
+
+# 2. Install server dependencies
+cd server && npm install
+
+# 3. Install client dependencies
+cd ../client && npm install
+
+# 4. Add environment files
+#    — Create client/.env and server/.env using the templates above
+
+# 5. Start both servers
+#    Terminal 1 (server)
+cd server && npm run dev
+
+#    Terminal 2 (client)
+cd client && npm run dev
+```
+
+Open **[http://localhost:5173](http://localhost:5173)** in your browser.
+
+---
+
+## 📡 API Reference
+
+### Users — `/api/users`
+
+| Method | Endpoint    | Auth | Description                          |
+|--------|-------------|------|--------------------------------------|
+| `POST` | `/register` | —    | Register with email & password       |
+| `POST` | `/login`    | —    | Login with email & password          |
+| `POST` | `/google`   | —    | Sign in / up with Google ID token    |
+| `GET`  | `/data`     | ✅   | Get authenticated user's profile     |
+| `GET`  | `/resumes`  | ✅   | Get all resumes for authenticated user |
+
+### Resumes — `/api/resumes`
+
+| Method   | Endpoint            | Auth | Description                          |
+|----------|---------------------|------|--------------------------------------|
+| `POST`   | `/create`           | ✅   | Create a new empty resume            |
+| `PUT`    | `/update`           | ✅   | Update resume data + profile image   |
+| `DELETE` | `/delete/:resumeId` | ✅   | Delete a resume                      |
+| `GET`    | `/get/:resumeId`    | ✅   | Get a private resume (owner only)    |
+| `GET`    | `/public/:resumeId` | —    | Get a public shareable resume        |
+
+### AI — `/api/ai`
+
+| Method | Endpoint          | Auth | Description                                      |
+|--------|-------------------|------|--------------------------------------------------|
+| `POST` | `/enhance-pro-sum`| ✅   | AI-enhance professional summary                  |
+| `POST` | `/enhance-job-desc`| ✅  | AI-enhance job description                       |
+| `POST` | `/upload-resume`  | ✅   | Parse PDF text → extract & create a new resume   |
+
+---
+
+## 🎨 Resume Templates
+
+| Template | Style |
+|---|---|
+| **Classic** | Traditional two-column layout, timeless and ATS-friendly |
+| **Modern** | Bold header with accent color, contemporary feel |
+| **Minimal** | Clean single-column, distraction-free design |
+| **Minimal Image** | Minimal layout with profile photo support |
+
+---
+
+## 🔧 Scripts
+
+```bash
+# Client
+npm run dev       # Start Vite dev server
+npm run build     # TypeScript check + production build
+npm run preview   # Preview production build locally
+npm run lint      # Run ESLint
+
+# Server
+npm run dev       # Start server with nodemon (hot reload)
+npm run build     # Compile TypeScript to dist/
+npm start         # Run compiled server (production)
+```
+
+---
+
+## ☁️ Deployment
+
+| Service | Platform | Notes |
+|---|---|---|
+| **Frontend** | [Vercel](https://vercel.com) | Set all `VITE_*` env variables in Vercel project settings. Redeploy after any env change. |
+| **Backend** | [Render](https://render.com) | Set all server env variables. Set `CLIENT_URL` to your Vercel domain for CORS. |
+
+> **Firebase Auth Note:** Add your Vercel production domain to **Firebase Console → Authentication → Settings → Authorized domains** to allow Google sign-in on the deployed site.
+
+---
+
+## 📄 License
+
+This project is licensed under the **ISC License**.
+
+---
+
+<div align="center">
+
+Built with 🤍 by **[Mohit Rajpurohit](https://github.com/rajpurohitmohit)**
+
+</div>
