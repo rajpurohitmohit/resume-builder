@@ -1,8 +1,10 @@
 import { login } from "@/app/features/authSlice";
 import api from "@/configs/api";
+import { firebaseAuth } from "@/configs/firebase";
 import { getThemeColors } from "@/configs/theme";
-import { LockIcon, Mail, User2Icon } from "lucide-react";
-import { useState } from "react";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { Loader2, LockIcon, Mail, User2Icon } from "lucide-react";
+import { useState, type ChangeEvent } from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +14,8 @@ export default function Login() {
   const query = new URLSearchParams(window.location.search)
   const urlState = query.get('state')
   const [state, setState] = useState(urlState|| "login");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -24,6 +28,7 @@ export default function Login() {
   
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
 
     try {
       const {data} = await api.post(`/api/users/${state}`, formData)
@@ -34,12 +39,41 @@ export default function Login() {
     } catch (error: unknown) {
       const err = error as { response?: { data?: { message?: string } }; message?: string };
       toast.error(err?.response?.data?.message || err?.message || "Something went wrong")
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-  const handleChange = (e: any) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleGoogleLogin = async () => {
+    setIsGoogleSubmitting(true);
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(firebaseAuth, provider);
+      const idToken = await result.user.getIdToken();
+      const { data } = await api.post("/api/users/google", { idToken });
+
+      dispatch(login(data));
+      localStorage.setItem("token", data.token);
+      toast.success(data.message);
+      navigate("/app");
+    } catch (error: unknown) {
+      const err = error as {
+        response?: { data?: { message?: string } };
+        message?: string;
+      };
+      toast.error(
+        err?.response?.data?.message ||
+          err?.message ||
+          "Google sign-in failed",
+      );
+    } finally {
+      setIsGoogleSubmitting(false);
+    }
   };
 
   return (
@@ -100,9 +134,37 @@ export default function Login() {
         </div>
         <button
           type="submit"
-          className={`mt-2 w-full h-11 rounded-lg text-white ${themeColors.bg} hover:opacity-90 transition-opacity`}
+          disabled={isSubmitting}
+          className={`mt-2 w-full h-11 rounded-lg text-white ${themeColors.bg} hover:opacity-90 transition-opacity disabled:cursor-not-allowed disabled:opacity-70 flex items-center justify-center gap-2`}
         >
-          {state === "login" ? "Login" : "Sign up"}
+          {isSubmitting && <Loader2 className="size-4 animate-spin" />}
+          {isSubmitting
+            ? state === "login" ? "Logging in..." : "Creating account..."
+            : state === "login" ? "Login" : "Sign up"}
+        </button>
+        <div className="my-4 flex items-center gap-3 text-xs text-gray-400">
+          <span className="h-px flex-1 bg-gray-200" />
+          OR
+          <span className="h-px flex-1 bg-gray-200" />
+        </div>
+        <button
+          type="button"
+          onClick={handleGoogleLogin}
+          disabled={isSubmitting || isGoogleSubmitting}
+          className="flex h-11 w-full items-center justify-center gap-2 rounded-lg border border-gray-300 bg-white text-gray-700 transition-colors hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {isGoogleSubmitting ? (
+            <Loader2 className="size-4 animate-spin" />
+          ) : (
+            <GoogleLogo />
+          )}
+          {isGoogleSubmitting
+            ? state === "login"
+              ? "Signing in..."
+              : "Signing up..."
+            : state === "login"
+              ? "Sign in with Google"
+              : "Sign up with Google"}
         </button>
         <p
           onClick={() =>
@@ -121,3 +183,29 @@ export default function Login() {
     </main>
   );
 }
+
+const GoogleLogo = () => (
+  <svg
+    aria-hidden="true"
+    className="size-4"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      fill="#4285F4"
+      d="M21.35 12.23c0-.74-.07-1.46-.23-2.14H12v4.05h5.23a4.47 4.47 0 0 1-1.94 2.93v2.44h3.14c1.84-1.7 2.92-4.2 2.92-7.28Z"
+    />
+    <path
+      fill="#34A853"
+      d="M12 21.58c2.63 0 4.84-.87 6.45-2.36l-3.14-2.44c-.87.58-1.98.93-3.31.93-2.54 0-4.7-1.72-5.47-4.03H3.28v2.52A9.74 9.74 0 0 0 12 21.58Z"
+    />
+    <path
+      fill="#FBBC05"
+      d="M6.53 13.68A5.85 5.85 0 0 1 6.23 12c0-.58.1-1.14.3-1.68V7.8H3.28A9.74 9.74 0 0 0 2.25 12c0 1.52.36 2.96 1.03 4.2l3.25-2.52Z"
+    />
+    <path
+      fill="#EA4335"
+      d="M12 6.29c1.43 0 2.72.49 3.73 1.45l2.8-2.8C16.84 3.4 14.63 2.42 12 2.42a9.74 9.74 0 0 0-8.72 5.38l3.25 2.52C7.3 8.01 9.46 6.29 12 6.29Z"
+    />
+  </svg>
+);

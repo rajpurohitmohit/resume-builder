@@ -1,6 +1,7 @@
 import ResumePreview from "@/components/ResumePreview";
 import api from "@/configs/api";
-import { ArrowLeftIcon, Loader2 } from "lucide-react";
+import { ArrowLeftIcon } from "lucide-react";
+import { PreviewSkeleton } from "@/components/Skeleton";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
@@ -26,9 +27,7 @@ const Preview = () => {
 
   if (isLoading) {
     return (
-      <div className="flex items-center justify-center h-screen">
-        <Loader2 className="size-8 animate-spin text-slate-400" />
-      </div>
+      <PreviewSkeleton />
     );
   }
 

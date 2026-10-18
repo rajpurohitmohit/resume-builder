@@ -16,6 +16,7 @@ import api from "@/configs/api";
 import toast from "react-hot-toast";
 import type { RootState } from "@/app/store";
 import pdfToText from "react-pdftotext";
+import { DashboardSkeleton } from "@/components/Skeleton";
 
 type ResumeData = typeof dummyResumeData;
 
@@ -30,6 +31,8 @@ const Dashboard = () => {
   const [resume, setResume] = useState<File | null>(null);
   const [editResumeId, setEditResumeId] = useState<string | false>(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingResumes, setIsLoadingResumes] = useState(true);
+  const [actionLoading, setActionLoading] = useState<"create" | "edit" | "delete" | null>(null);
 
   const navigate = useNavigate();
 
@@ -47,12 +50,15 @@ const Dashboard = () => {
       toast.error(
         err?.response?.data?.message || err?.message || "Something went wrong",
       );
+    } finally {
+      setIsLoadingResumes(false);
     }
   };
 
   const createResume = async (e: FormEvent) => {
     try {
       e.preventDefault();
+      setActionLoading("create");
       const { data } = await api.post(
         "/api/resumes/create",
         { title },
@@ -70,6 +76,8 @@ const Dashboard = () => {
       toast.error(
         err?.response?.data?.message || err?.message || "Something went wrong",
       );
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -99,12 +107,15 @@ const Dashboard = () => {
       toast.error(
         err?.response?.data?.message || err?.message || "Something went wrong",
       );
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const editTitle = async (e: FormEvent) => {
     try {
       e.preventDefault();
+      setActionLoading("edit");
       const { data } = await api.put(
         `/api/resumes/update`,
         { resumeId: editResumeId, resumeData: { title } },
@@ -128,6 +139,8 @@ const Dashboard = () => {
       toast.error(
         err?.response?.data?.message || err?.message || "Something went wrong",
       );
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -139,6 +152,7 @@ const Dashboard = () => {
     if (!confirm) return;
 
     try {
+      setActionLoading("delete");
       const { data } = await api.delete(`/api/resumes/delete/${resumeId}`, {
         headers: { Authorization: token },
       });
@@ -152,6 +166,8 @@ const Dashboard = () => {
       toast.error(
         err?.response?.data?.message || err?.message || "Something went wrong",
       );
+    } finally {
+      setActionLoading(null);
     }
   };
 
@@ -190,8 +206,11 @@ const Dashboard = () => {
 
         <hr className="border-slate-300 my-6 sm:w-76.25" />
 
-        <div className="grid grid-cols-2 sm:flex flex-wrap gap-4">
-          {allResumes.map((resume, index) => {
+        {isLoadingResumes ? (
+          <DashboardSkeleton />
+        ) : (
+          <div className="grid grid-cols-2 sm:flex flex-wrap gap-4">
+            {allResumes.map((resume, index) => {
             const baseColor = colors[index % colors.length];
             return (
               <button
@@ -221,10 +240,14 @@ const Dashboard = () => {
                   className="absolute top-1 right-1 group-hover:flex items-center hidden"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <TrashIcon
-                    className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"
-                    onClick={() => deleteResume(resume._id)}
-                  />
+                  {actionLoading === "delete" ? (
+                    <LoaderCircleIcon className="size-7 p-1.5 animate-spin text-slate-700" />
+                  ) : (
+                    <TrashIcon
+                      className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"
+                      onClick={() => deleteResume(resume._id)}
+                    />
+                  )}
                   <PencilIcon
                     className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"
                     onClick={() => {
@@ -235,8 +258,9 @@ const Dashboard = () => {
                 </div>
               </button>
             );
-          })}
-        </div>
+            })}
+          </div>
+        )}
 
         {showCreateResume && (
           <form
@@ -258,10 +282,12 @@ const Dashboard = () => {
                 required
               />
               <button
+                disabled={actionLoading === "create"}
                 type="submit"
-                className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
               >
-                Create Resume
+                {actionLoading === "create" && <LoaderCircleIcon className="size-4 animate-spin" />}
+                {actionLoading === "create" ? "Creating..." : "Create Resume"}
               </button>
               <button
                 type="button"
@@ -368,10 +394,12 @@ const Dashboard = () => {
                 required
               />
               <button
+                disabled={actionLoading === "edit"}
                 type="submit"
-                className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors"
+                className="w-full py-2 bg-green-600 text-white rounded hover:bg-green-700 transition-colors disabled:opacity-70 flex items-center justify-center gap-2"
               >
-                Update
+                {actionLoading === "edit" && <LoaderCircleIcon className="size-4 animate-spin" />}
+                {actionLoading === "edit" ? "Updating..." : "Update"}
               </button>
               <button
                 type="button"

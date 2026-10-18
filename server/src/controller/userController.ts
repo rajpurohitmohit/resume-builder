@@ -4,6 +4,9 @@ import User from "../model/userModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import Resume from "../model/resumeModel.js";
+import firebaseAdmin from "../configs/firebaseAdmin.js";
+import { getAuth } from "firebase-admin/auth";
+import crypto from "node:crypto";
 
 const generateToken = (userId: string) => {
   if (!userId) {
@@ -103,6 +106,45 @@ export const loginUser = async (req: Request, res: Response) => {
     });
   } catch (err: any) {
     return res.status(400).json({ message: err.message });
+  }
+};
+
+// POST: /api/users/google
+export const loginWithGoogle = async (req: Request, res: Response) => {
+  try {
+    const { idToken } = req.body;
+
+    if (!idToken || typeof idToken !== "string") {
+      return res.status(400).json({ message: "Google credential is required" });
+    }
+
+    const decodedToken = await getAuth(firebaseAdmin).verifyIdToken(idToken);
+    const email = decodedToken.email;
+
+    if (!email || decodedToken.email_verified !== true) {
+      return res.status(401).json({ message: "Verified Google email is required" });
+    }
+
+    let user = await User.findOne({ email });
+    if (!user) {
+      const password = await bcrypt.hash(crypto.randomBytes(32).toString("hex"), 10);
+      user = await User.create({
+        name: decodedToken.name || email.split("@")[0],
+        email,
+        password,
+      });
+    }
+
+    const token = generateToken(user._id.toString());
+    const userResponse = { ...user.toObject(), password: undefined };
+
+    return res.status(200).json({
+      message: "Google login successful",
+      token,
+      user: userResponse,
+    });
+  } catch (err: any) {
+    return res.status(401).json({ message: "Invalid Google credential" });
   }
 };
 

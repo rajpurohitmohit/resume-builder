@@ -19,6 +19,7 @@ import {
   FileText,
   FolderIcon,
   GraduationCap,
+  Loader2,
   Share2Icon,
   Sparkles,
   User,
@@ -27,6 +28,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import Skeleton, { BuilderSkeleton } from "@/components/Skeleton";
 
 const ResumeBuilder = () => {
   const { resumeId } = useParams();
@@ -69,11 +71,16 @@ const ResumeBuilder = () => {
       }
     } catch (error: any) {
       console.log(error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const [activeSectionIndex, setActiveSectionIndex] = useState(0);
   const [removeBackground, setRemoveBackground] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isChangingVisibility, setIsChangingVisibility] = useState(false);
 
   const sections = [
     {
@@ -116,6 +123,7 @@ const ResumeBuilder = () => {
 
   const changeResumeVisibility = async () => {
     if (!resumeId) return;
+    setIsChangingVisibility(true);
     try {
       const formData = new FormData();
       formData.append("resumeId", resumeId);
@@ -133,6 +141,8 @@ const ResumeBuilder = () => {
       toast.success(data.message);
     } catch (error: any) {
       console.log(error.message);
+    } finally {
+      setIsChangingVisibility(false);
     }
   };
 
@@ -151,25 +161,39 @@ const ResumeBuilder = () => {
   };
 
   const saveResume = async () => {
-    let updatedResumeData = structuredClone(resumeData);
+    setIsSaving(true);
+    try {
+      const updatedResumeData = structuredClone(resumeData);
 
-    if (typeof resumeData.personal_info.image === "object") {
-      delete updatedResumeData.personal_info.image;
+      if (typeof resumeData.personal_info.image === "object") {
+        delete updatedResumeData.personal_info.image;
+      }
+
+      const formData = new FormData();
+      formData.append("resumeId", resumeId || resumeData._id);
+      formData.append("resumeData", JSON.stringify(updatedResumeData));
+      removeBackground && formData.append("removeBackground", "yes");
+      typeof resumeData.personal_info.image === "object" &&
+        formData.append("image", resumeData.personal_info.image);
+
+      const { data } = await api.put("/api/resumes/update", formData, {
+        headers: { Authorization: token },
+      });
+      setResumeData(data.resume);
+      return data;
+    } finally {
+      setIsSaving(false);
     }
-
-    const formData = new FormData();
-    formData.append("resumeId", resumeId || resumeData._id);
-    formData.append("resumeData", JSON.stringify(updatedResumeData));
-    removeBackground && formData.append("removeBackground", "yes");
-    typeof resumeData.personal_info.image === "object" &&
-      formData.append("image", resumeData.personal_info.image);
-
-    const { data } = await api.put("/api/resumes/update", formData, {
-      headers: { Authorization: token },
-    });
-    setResumeData(data.resume);
-    return data;
   };
+
+  if (isLoading) {
+    return (
+      <div className="max-w-7xl mx-auto px-4 py-6">
+        <Skeleton className="mb-6 h-5 w-36" />
+        <BuilderSkeleton />
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -318,8 +342,10 @@ const ResumeBuilder = () => {
                     error: (err) => err?.message || "Failed to save",
                   });
                 }}
+                disabled={isSaving}
               >
-                Save Changes
+                {isSaving && <Loader2 className="mr-2 inline size-4 animate-spin" />}
+                {isSaving ? "Saving..." : "Save Changes"}
               </button>
             </div>
           </div>
@@ -336,13 +362,19 @@ const ResumeBuilder = () => {
                 <button
                   className="flex items-center p-2 px-4 gap-2 text-xs bg-linear-to-br from-green-100 to-green-200 text-green-600 ring-green-300 rounded-lg hover:ring transition-ring"
                   onClick={changeResumeVisibility}
+                  disabled={isChangingVisibility}
                 >
                   {resumeData.public ? (
                     <EyeIcon className="size-4" />
                   ) : (
                     <EyeOffIcon className="size-4" />
                   )}
-                  {resumeData.public ? "Public" : "Private"}
+                  {isChangingVisibility && <Loader2 className="size-4 animate-spin" />}
+                  {isChangingVisibility
+                    ? "Updating..."
+                    : resumeData.public
+                      ? "Public"
+                      : "Private"}
                 </button>
                 <button
                   className="flex items-center p-2 px-4 gap-2 text-xs bg-linear-to-br from-green-100 to-green-200 text-green-600 ring-green-300 rounded-lg hover:ring transition-ring"

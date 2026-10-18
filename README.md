@@ -17,6 +17,7 @@ A modern, full-stack resume builder application that allows users to create, cus
 - **PDF Resume Import** - Extract content from existing PDF resumes
 - **Image Upload** - Add profile photos with ImageKit integration
 - **User Authentication** - Secure JWT-based authentication
+- **Google Authentication** - Sign in or create an account with Google
 - **Cloud Storage** - Save and access your resumes from anywhere
 - **Shareable Links** - Make your resume public and share with recruiters
 
@@ -40,6 +41,7 @@ A modern, full-stack resume builder application that allows users to create, cus
 - **MongoDB** - Database
 - **Mongoose** - ODM
 - **JWT** - Authentication
+- **Firebase Authentication** - Google identity verification
 - **OpenAI API** - AI features
 - **ImageKit** - Image storage
 - **Multer** - File uploads
@@ -85,6 +87,12 @@ resume-builder/
 
 ```env
 VITE_API_URL=http://localhost:3000
+VITE_FIREBASE_API_KEY=your_firebase_web_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_firebase_project_id
+VITE_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
+VITE_FIREBASE_APP_ID=your_firebase_app_id
 ```
 
 #### Server (`server/.env`)
@@ -101,6 +109,14 @@ OPENAI_API_KEY=your_openai_api_key
 IMAGEKIT_PUBLIC_KEY=your_imagekit_public_key
 IMAGEKIT_PRIVATE_KEY=your_imagekit_private_key
 IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
+
+# Deployed frontend URL(s), comma-separated if needed
+CLIENT_URL=http://localhost:5173
+
+# Firebase Admin (Google sign-in token verification)
+FIREBASE_PROJECT_ID=your_firebase_project_id
+FIREBASE_CLIENT_EMAIL=your_firebase_admin_client_email
+FIREBASE_PRIVATE_KEY="your_firebase_admin_private_key_with_escaped_newlines"
 ```
 
 ### Installation
@@ -156,6 +172,7 @@ IMAGEKIT_URL_ENDPOINT=your_imagekit_url_endpoint
 | ------ | --------------------- | ----------------- |
 | POST   | `/api/users/register` | Register new user |
 | POST   | `/api/users/login`    | User login        |
+| POST   | `/api/users/google`   | Google sign-in or sign-up |
 | GET    | `/api/users/data`     | Get user data     |
 
 ### Resumes
